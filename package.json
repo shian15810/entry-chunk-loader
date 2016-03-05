@@ -1,0 +1,22 @@
+{
+  "name": "spawn-loader",
+  "version": "0.0.0",
+  "description": "Webpack loader to spawn a new entry chunk.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erikdesjardins/spawn-loader.git"
+  },
+  "keywords": [
+    "webpack"
+  ],
+  "author": "Erik Desjardins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikdesjardins/spawn-loader/issues"
+  },
+  "homepage": "https://github.com/erikdesjardins/spawn-loader#readme"
+}
