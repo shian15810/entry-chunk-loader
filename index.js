@@ -27,7 +27,7 @@ function runCompiler(compiler, callback) {
 			callback(error);
 		} else if (entries[0]){
 			var url = entries[0].files[0];
-			callback(null, getSource(url));;
+			callback(null, getSource(url));
 		} else {
 			callback(null, null);
 		}
@@ -36,7 +36,7 @@ function runCompiler(compiler, callback) {
 
 function createCompiler(loader, request, options) {
 	var compiler = getCompilation(loader).createChildCompiler('entry', options);
-	var plugin = new SingleEntryPlugin(loader.context, '!!' + request, 'main')
+	var plugin = new SingleEntryPlugin(loader.context, '!!' + request, utils.interpolateName(loader, '[name]', {}));
 	compiler.apply(plugin);
 	var subCache = 'subcache ' + __dirname + ' ' + request;
 	compiler.plugin('compilation', function(compilation) {
