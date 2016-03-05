@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/erikdesjardins/spawn-loader/issues"
   },
-  "homepage": "https://github.com/erikdesjardins/spawn-loader#readme"
+  "homepage": "https://github.com/erikdesjardins/spawn-loader#readme",
+  "dependencies": {
+    "loader-utils": "^0.2.12"
+  }
 }
