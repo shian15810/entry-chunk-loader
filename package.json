@@ -19,6 +19,11 @@
     "url": "https://github.com/erikdesjardins/spawn-loader/issues"
   },
   "homepage": "https://github.com/erikdesjardins/spawn-loader#readme",
+  "devDependencies": {
+    "ava": "^0.12.0",
+    "rimraf": "^2.5.2",
+    "webpack": "^1.12.14"
+  },
   "dependencies": {
     "loader-utils": "^0.2.12"
   }
