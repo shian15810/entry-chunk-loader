@@ -8,6 +8,7 @@
 
 var SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 var utils = require('loader-utils');
+var webpack = require('webpack');
 
 module.exports = function() {
 	// ...
@@ -38,6 +39,7 @@ function createCompiler(loader, request, options) {
 	var compiler = getCompilation(loader).createChildCompiler('entry', options);
 	var plugin = new SingleEntryPlugin(loader.context, '!!' + request, utils.interpolateName(loader, '[name]', {}));
 	compiler.apply(plugin);
+	compiler.apply(new webpack.NoErrorsPlugin());
 	var subCache = 'subcache ' + __dirname + ' ' + request;
 	compiler.plugin('compilation', function(compilation) {
 		if (!compilation.cache) {
