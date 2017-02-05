@@ -15,48 +15,28 @@ module.exports = function() {
 };
 
 module.exports.pitch = function(request) {
-	var query = utils.parseQuery(this.query);
-	var compiler = createCompiler(this, request, {
-		filename: query.name
-	});
-	runCompiler(compiler, this.async());
-};
+	var callback = this.async();
 
-function runCompiler(compiler, callback) {
+	var query = utils.parseQuery(this.query);
+
+	// create a child compiler (hacky)
+	var compiler = this._compilation.createChildCompiler('entry', { filename: query.name });
+
+	// add a dependency on the entry point of the child compiler, so watch mode works
+	this.addDependency(request);
+	compiler.apply(new SingleEntryPlugin(this.context, '!!' + request, utils.interpolateName(this, '[name]', {})));
+
+	// avoid emitting files with errors, which breaks the parent compiler
+	compiler.apply(new webpack.NoErrorsPlugin());
+
 	compiler.runAsChild(function(error, entries) {
 		if (error) {
 			callback(error);
-		} else if (entries[0]){
+		} else if (entries[0]) {
 			var url = entries[0].files[0];
-			callback(null, getSource(url));
+			callback(null, 'module.exports = __webpack_public_path__ + ' + JSON.stringify(url) + ';');
 		} else {
 			callback(null, null);
 		}
 	});
-}
-
-function createCompiler(loader, request, options) {
-	var compiler = getCompilation(loader).createChildCompiler('entry', options);
-	var plugin = new SingleEntryPlugin(loader.context, '!!' + request, utils.interpolateName(loader, '[name]', {}));
-	compiler.apply(plugin);
-	compiler.apply(new webpack.NoErrorsPlugin());
-	var subCache = 'subcache ' + __dirname + ' ' + request;
-	compiler.plugin('compilation', function(compilation) {
-		if (!compilation.cache) {
-			return;
-		}
-		if (!compilation.cache[subCache]) {
-			compilation.cache[subCache] = {};
-		}
-		compilation.cache = compilation.cache[subCache];
-	});
-	return compiler;
-}
-
-function getSource(url) {
-	return 'module.exports = __webpack_public_path__ + ' + JSON.stringify(url);
-}
-
-function getCompilation(loader) {
-	return loader._compilation;
-}
+};
