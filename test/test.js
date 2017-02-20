@@ -15,17 +15,21 @@ test('basic usage', async t => {
 				filename: 'main.bundle.js'
 			},
 			module: {
-				loaders: [
-					{ test: /\.entry\.js$/, loader: join(__dirname, '../index.js'), query: { name: '[name].spawned.js' } }
-				]
+				loaders: [{
+					test: /\.entry\.js$/,
+					use: {
+						loader: join(__dirname, '../index.js'),
+						options: { name: '[name].spawned.js' }
+					}
+				}]
 			}
 		}, (err, stats) => {
 			err ? reject(err) : resolve(stats);
 		});
 	});
 
-	t.ok(statSync(join(__dirname, 'dist/main.bundle.js')), 'main bundle exists');
-	t.ok(statSync(join(__dirname, 'dist/other.entry.spawned.js')), 'second entry bundle exists');
+	t.truthy(statSync(join(__dirname, 'dist/main.bundle.js')), 'main bundle exists');
+	t.truthy(statSync(join(__dirname, 'dist/other.entry.spawned.js')), 'second entry bundle exists');
 
 	t.regex(readFileSync(join(__dirname, 'dist/main.bundle.js')), /"other\.entry\.spawned\.js"/, 'references spawned module');
 	t.regex(readFileSync(join(__dirname, 'dist/other.entry.spawned.js')), /\bfunction __webpack_require__\b/, 'has prelude');

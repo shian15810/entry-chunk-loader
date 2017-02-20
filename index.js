@@ -7,7 +7,7 @@
 'use strict';
 
 var SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
-var utils = require('loader-utils');
+var loaderUtils = require('loader-utils');
 var webpack = require('webpack');
 
 module.exports = function() {
@@ -17,14 +17,14 @@ module.exports = function() {
 module.exports.pitch = function(request) {
 	var callback = this.async();
 
-	var query = utils.parseQuery(this.query);
+	var query = loaderUtils.getOptions(this);
 
 	// create a child compiler (hacky)
 	var compiler = this._compilation.createChildCompiler('entry', { filename: query.name });
 
 	// add a dependency on the entry point of the child compiler, so watch mode works
 	this.addDependency(request);
-	compiler.apply(new SingleEntryPlugin(this.context, '!!' + request, utils.interpolateName(this, '[name]', {})));
+	compiler.apply(new SingleEntryPlugin(this.context, '!!' + request, loaderUtils.interpolateName(this, '[name]', {})));
 
 	// avoid emitting files with errors, which breaks the parent compiler
 	compiler.apply(new webpack.NoErrorsPlugin());
