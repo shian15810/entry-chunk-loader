@@ -2,10 +2,11 @@
 
 Webpack loader to spawn a new entry chunk.
 
-A fork of [`entry-loader`](https://github.com/eoin/entry-loader).
-Almost exactly the same, but uses the required file's basename for the chunk name.
+A fork of [`entry-loader`](https://github.com/eoin/entry-loader), with a few improvements:
 
-Additionally, the [`NoErrorsPlugin`](https://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin) is applied to the child compiler, to avoid breaking the parent compiler when compilation fails. This means that you will need to use the [bail option](https://webpack.github.io/docs/configuration.html#bail) if you want compilation to fail when an error occurs.
+- Uses the required file's basename for the chunk name.
+
+- Applies the [`NoErrorsPlugin`](https://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin) to the child compiler to prevent syntax errors from crashing the parent compiler in watch mode.
 
 ## Installation
 
@@ -14,5 +15,6 @@ Additionally, the [`NoErrorsPlugin`](https://webpack.github.io/docs/list-of-plug
 ## Usage
 
 ```js
-var url = require('spawn?name=[name]-[hash:6].js!./file');
+var url = require('spawn-loader?name=[name]-[hash:6].js!./file');
+// url === 'file-123456.js'
 ```
