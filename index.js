@@ -18,8 +18,8 @@ module.exports = function() {
 module.exports.pitch = function(request) {
 	var callback = this.async();
 
-	var query = loaderUtils.getOptions(this);
-	var outputFilename = loaderUtils.interpolateName(this, query.name, {});
+	var query = loaderUtils.getOptions(this) || {};
+	var outputFilename = loaderUtils.interpolateName(this, query.name || '[name].[ext]', {});
 	var outputDir = query.path || '.';
 
 	// create a child compiler (hacky)

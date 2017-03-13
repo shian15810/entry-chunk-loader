@@ -33,6 +33,7 @@ test('basic usage', async t => {
 	const hi = readFileSync(join(__dirname, 'dist/children/hi.jpg'));
 	const child1 = readFileSync(join(__dirname, 'dist/children/child1.js'), 'utf8');
 	const subchild = readFileSync(join(__dirname, 'dist/children/subchild/subchild.js'), 'utf8');
+	const defaults = readFileSync(join(__dirname, 'dist/defaults.js'), 'utf8');
 
 	t.regex(mainBundle, /"other\.entry\.spawned\.js"/, 'references spawned other entry');
 	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references spawned child1');
@@ -52,6 +53,10 @@ test('basic usage', async t => {
 	t.regex(subchild, /\bfunction __webpack_require__\b/, 'has prelude');
 	t.regex(subchild, /var a = 'b';/, 'has expected content');
 	t.regex(subchild, /__webpack_require__\.p = ""/, 'publicPath is empty');
+
+	t.regex(defaults, /\bfunction __webpack_require__\b/, 'has prelude');
+	t.regex(defaults, /var def = 'aults';/, 'has expected content');
+	t.regex(defaults, /__webpack_require__\.p = ""/, 'publicPath is empty');
 });
 
 test.after(t => {
