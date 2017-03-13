@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "ava": "^0.18.2",
+    "file-loader": "^0.10.1",
     "rimraf": "^2.6.1",
     "webpack": "^2.2.1"
   }
