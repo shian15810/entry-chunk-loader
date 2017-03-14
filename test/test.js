@@ -34,10 +34,12 @@ test('basic usage', async t => {
 	const child1 = readFileSync(join(__dirname, 'dist/children/child1.js'), 'utf8');
 	const subchild = readFileSync(join(__dirname, 'dist/children/subchild/subchild.js'), 'utf8');
 	const defaults = readFileSync(join(__dirname, 'dist/defaults.js'), 'utf8');
+	const manifest = readFileSync(join(__dirname, 'dist/inertOut/manifest.json'), 'utf8');
 
 	t.regex(mainBundle, /"other\.entry\.spawned\.js"/, 'references spawned other entry');
 	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references spawned child1');
 	t.regex(mainBundle, /"defaults\.js"/, 'references spawned defaults');
+	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.json"/, 'references spawned manifest.json');
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(otherEntry, /\bfunction __webpack_require__\b/, 'has prelude');
@@ -58,6 +60,8 @@ test('basic usage', async t => {
 	t.regex(defaults, /\bfunction __webpack_require__\b/, 'has prelude');
 	t.regex(defaults, /var def = 'aults';/, 'has expected content');
 	t.regex(defaults, /__webpack_require__\.p = ""/, 'publicPath is empty');
+
+	t.regex(manifest, /^\{ "manifest": "json" \}\s+$/, 'manifest.json exists, is raw content');
 });
 
 test.after(t => {

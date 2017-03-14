@@ -30,7 +30,8 @@ var url = require('spawn-loader?path=childDir!./otherBundle');
 var url = require('spawn-loader?name=bundle.js!./file');
 // url === 'bundle.js'
 
-// both options
-var url = require('spawn-loader?path=childDir&name=bundle.js!./file');
-// url === 'childDir/bundle.js'
+// emit the required file as-is, with no prelude
+// only useful in combination with other loaders
+var url = require('spawn-loader?inert!./manifest.json');
+// url === 'manifest.json'
 ```

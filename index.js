@@ -11,6 +11,8 @@ var loaderUtils = require('loader-utils');
 var webpack = require('webpack');
 var SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 
+var fileLoaderPath = require.resolve('file-loader');
+
 module.exports = function() {
 	// ...
 };
@@ -21,13 +23,21 @@ module.exports.pitch = function(request) {
 	var query = loaderUtils.getOptions(this) || {};
 	var outputFilename = loaderUtils.interpolateName(this, query.name || '[name].[ext]', {});
 	var outputDir = query.path || '.';
+	var inert = query.inert || false;
+
+	// output placeholder for `inert`
+	var placeholder = '__SPAWN_LOADER_' + String(Math.random()).slice(2) + '__';
 
 	// create a child compiler (hacky)
-	var compiler = this._compilation.createChildCompiler('entry', { filename: outputFilename });
+	var compiler = this._compilation.createChildCompiler('entry', { filename: inert ? placeholder : outputFilename });
 
 	// add a dependency on the entry point of the child compiler, so watch mode works
 	this.addDependency(request);
-	compiler.apply(new SingleEntryPlugin(this.context, '!!' + request, loaderUtils.interpolateName(this, '[name]', {})));
+	compiler.apply(new SingleEntryPlugin(
+		this.context,
+		'!!' + (inert ? fileLoaderPath + '?' + JSON.stringify({ name: outputFilename }) + '!' : '') + request,
+		loaderUtils.interpolateName(this, '[name]', {}) // name of the chunk (in logs), not a filename
+	));
 
 	// avoid emitting files with errors, which breaks the parent compiler
 	compiler.apply(new webpack.NoErrorsPlugin());
@@ -39,6 +49,7 @@ module.exports.pitch = function(request) {
 
 		this.parentCompilation.children.push(compilation);
 		Object.keys(compilation.assets).forEach(function(name) {
+			if (inert && name === placeholder) return;
 			this.parentCompilation.assets[path.join(outputDir, name)] = compilation.assets[name];
 		}.bind(this));
 
