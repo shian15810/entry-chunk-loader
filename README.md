@@ -17,10 +17,20 @@ A fork of [`entry-loader`](https://github.com/eoin/entry-loader), with a few imp
 ## Usage
 
 ```js
-var url = require('spawn-loader?name=[name]-[hash:6].js!./file');
-// url === 'file-123456.js'
+// simplest usage: emits otherBundle.js in the same directory
+var url = require('spawn-loader!./otherBundle');
+// url === 'otherBundle.js'
 
-// to output to a different directory
-var url2 = require('spawn?path=childDir&name=[name]-[hash:6].js!./file');
-// url2 === 'childDir/file-123456.js'
+// build into a subdir: emits otherBundle.js
+// (and any assets it emits) into childDir/
+var url = require('spawn-loader?path=childDir!./otherBundle');
+// url === 'childDir/otherBundle.js'
+
+// specify a different name
+var url = require('spawn-loader?name=bundle.js!./file');
+// url === 'bundle.js'
+
+// both options
+var url = require('spawn-loader?path=childDir&name=bundle.js!./file');
+// url === 'childDir/bundle.js'
 ```
