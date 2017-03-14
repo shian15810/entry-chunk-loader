@@ -2,7 +2,7 @@
 
 Webpack loader to spawn a new entry chunk.
 
-A fork of [`entry-loader`](https://github.com/eoin/entry-loader), with a few improvements:
+A fork of [`entry-loader`](https://github.com/eoin/entry-loader), with a few changes:
 
 - Uses the required file's basename for the chunk name.
 
