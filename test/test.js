@@ -37,6 +37,7 @@ test('basic usage', async t => {
 
 	t.regex(mainBundle, /"other\.entry\.spawned\.js"/, 'references spawned other entry');
 	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references spawned child1');
+	t.regex(mainBundle, /"defaults\.js"/, 'references spawned defaults');
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(otherEntry, /\bfunction __webpack_require__\b/, 'has prelude');
