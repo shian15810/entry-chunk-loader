@@ -21,7 +21,9 @@ module.exports.pitch = function(request) {
 	var callback = this.async();
 
 	var query = loaderUtils.getOptions(this) || {};
-	var outputFilename = loaderUtils.interpolateName(this, query.name || '[name].[ext]', {});
+	// loaderUtils handles [ext], [name] and some others but does not handle [hash], etc.
+	// webpack itself handles everything but [ext]
+	var partiallyInterpolatedName = loaderUtils.interpolateName(this, query.name || '[name].[ext]', {});
 	var outputDir = query.path || '.';
 	var inert = query.inert || false;
 
@@ -29,13 +31,13 @@ module.exports.pitch = function(request) {
 	var placeholder = '__SPAWN_LOADER_' + String(Math.random()).slice(2) + '__';
 
 	// create a child compiler (hacky)
-	var compiler = this._compilation.createChildCompiler('entry', { filename: inert ? placeholder : outputFilename });
+	var compiler = this._compilation.createChildCompiler('entry', { filename: inert ? placeholder : partiallyInterpolatedName });
 
 	// add a dependency on the entry point of the child compiler, so watch mode works
 	this.addDependency(request);
 	compiler.apply(new SingleEntryPlugin(
 		this.context,
-		'!!' + (inert ? fileLoaderPath + '?' + JSON.stringify({ name: outputFilename }) + '!' : '') + request,
+		'!!' + (inert ? fileLoaderPath + '?' + JSON.stringify({ name: partiallyInterpolatedName }) + '!' : '') + request,
 		loaderUtils.interpolateName(this, '[name]', {}) // name of the chunk (in logs), not a filename
 	));
 
@@ -47,9 +49,14 @@ module.exports.pitch = function(request) {
 	compiler.compile(function(err, compilation) {
 		if (err) return callback(err);
 
+		// for non-inert entry points, the first file in the first chunk of the first (should only be one) entry point is the real file
+		// see https://github.com/webpack/webpack/blob/813c47bde92575700937580d58fa691d4b0b8ac2/lib/Compiler.js#L298
+		var outputFilename = compilation.entrypoints[Object.keys(compilation.entrypoints)[0]].chunks[0].files[0];
+
 		this.parentCompilation.children.push(compilation);
 		Object.keys(compilation.assets).forEach(function(name) {
 			if (inert && name === placeholder) return;
+			if (inert) outputFilename = name; // for inert entry points, last non-placeholder asset is the real file
 			this.parentCompilation.assets[path.join(outputDir, name)] = compilation.assets[name];
 		}.bind(this));
 
