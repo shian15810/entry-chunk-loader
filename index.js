@@ -47,6 +47,20 @@ module.exports.pitch = function(request) {
 	// avoid emitting files with errors, which breaks the parent compiler
 	compiler.apply(new webpack.NoErrorsPlugin());
 
+	// use subcache to avoid issues with module-replacement plugins (and possibly other issues)
+	// https://github.com/webpack-contrib/worker-loader/blob/3ad1b9e544b0ad236955697297cbe3cbf5871d10/index.js#L45-L53
+	// even with webpack 3's cache creation, this is necessary for watch mode rebuilds to work (who knows why)
+	// https://github.com/webpack/webpack/blob/813c47bde92575700937580d58fa691d4b0b8ac2/lib/Compiler.js#L441-L448
+	var subCache = 'subcache ' + __dirname + ' ' + request;
+	compiler.plugin('compilation', function(compilation) {
+		if (compilation.cache) {
+			if (!compilation.cache[subCache]) {
+				compilation.cache[subCache] = {};
+			}
+			compilation.cache = compilation.cache[subCache];
+		}
+	});
+
 	// like compiler.runAsChild(), but remaps paths if necessary
 	// https://github.com/webpack/webpack/blob/2095096835caffbbe3472beaffebb9e7a732ade3/lib/Compiler.js#L267
 	compiler.compile(function(err, compilation) {
