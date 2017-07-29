@@ -1,6 +1,6 @@
 {
   "name": "spawn-loader",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Webpack loader to spawn a new entry chunk.",
   "main": "index.js",
   "scripts": {
