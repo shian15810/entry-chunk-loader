@@ -31,7 +31,10 @@ module.exports.pitch = function(request) {
 	var placeholder = '__SPAWN_LOADER_' + String(Math.random()).slice(2) + '__';
 
 	// create a child compiler (hacky)
-	var compiler = this._compilation.createChildCompiler('entry', { filename: inert ? placeholder : partiallyInterpolatedName });
+	var compiler = this._compilation.createChildCompiler(
+		loaderUtils.interpolateName(this, '[name]', {}), // name of the compiler (in logs)
+		{ filename: inert ? placeholder : partiallyInterpolatedName }
+	);
 
 	// add a dependency on the entry point of the child compiler, so watch mode works
 	this.addDependency(request);
