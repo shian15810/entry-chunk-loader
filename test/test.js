@@ -35,11 +35,15 @@ test('basic usage', async t => {
 	const subchild = readFileSync(join(__dirname, 'dist/children/subchild/subchild.js'), 'utf8');
 	const defaults = readFileSync(join(__dirname, 'dist/defaults.js'), 'utf8');
 	const manifest = readFileSync(join(__dirname, 'dist/inertOut/manifest.json'), 'utf8');
+	const defaultsWithHash = readFileSync(join(__dirname, 'dist/defaults.c8d36a.js'), 'utf8');
+	const defaultsInertWithHash = readFileSync(join(__dirname, 'dist/defaults-inert.2f0c2f.js'), 'utf8');
 
 	t.regex(mainBundle, /"other\.entry\.spawned\.js"/, 'references spawned other entry');
 	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references spawned child1');
 	t.regex(mainBundle, /"defaults\.js"/, 'references spawned defaults');
 	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.json"/, 'references spawned manifest.json');
+	t.regex(mainBundle, /"defaults.c8d36a.js"/, 'references spawned defaults with hash');
+	t.regex(mainBundle, /"defaults-inert.2f0c2f.js"/, 'references spawned inert defaults with hash');
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(otherEntry, /\bfunction __webpack_require__\b/, 'has prelude');
@@ -62,6 +66,12 @@ test('basic usage', async t => {
 	t.regex(defaults, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(manifest, /^\{ "manifest": "json" \}\s+$/, 'manifest.json exists, is raw content');
+
+	t.regex(defaultsWithHash, /\bfunction __webpack_require__\b/, 'has prelude');
+	t.regex(defaultsWithHash, /var def = 'aults';/, 'has expected content');
+	t.regex(defaultsWithHash, /__webpack_require__\.p = ""/, 'publicPath is empty');
+
+	t.regex(defaultsInertWithHash, /^var def = 'aults';\s+$/, 'has expected, raw content');
 });
 
 test.after(t => {
