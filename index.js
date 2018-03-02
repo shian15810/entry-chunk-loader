@@ -8,7 +8,6 @@
 
 var path = require('path');
 var loaderUtils = require('loader-utils');
-var webpack = require('webpack');
 var SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 
 var fileLoaderPath = require.resolve('file-loader');
@@ -43,9 +42,6 @@ module.exports.pitch = function(request) {
 		'!!' + (inert ? fileLoaderPath + '?' + JSON.stringify({ name: partiallyInterpolatedName }) + '!' : '') + request,
 		loaderUtils.interpolateName(this, '[name]', {}) // name of the chunk (in logs), not a filename
 	));
-
-	// avoid emitting files with errors, which breaks the parent compiler
-	compiler.apply(new webpack.NoErrorsPlugin());
 
 	// like compiler.runAsChild(), but remaps paths if necessary
 	// https://github.com/webpack/webpack/blob/2095096835caffbbe3472beaffebb9e7a732ade3/lib/Compiler.js#L267
