@@ -1,6 +1,6 @@
 {
   "name": "spawn-loader",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Webpack loader to spawn a new entry chunk.",
   "main": "index.js",
   "scripts": {
@@ -23,11 +23,12 @@
     "webpack": "^4.0.0"
   },
   "dependencies": {
-    "file-loader": "^1.1.11",
+    "inert-entry-webpack-plugin": "^4.0.0",
     "loader-utils": "^1.1.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
+    "file-loader": "^1.1.11",
     "rimraf": "^2.6.2",
     "webpack": "^4.0.1"
   }

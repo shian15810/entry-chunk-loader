@@ -42,7 +42,7 @@ test('basic usage', async t => {
 		'utf8'
 	);
 	const defaultsInertWithHash = readFileSync(
-		join(__dirname, process.platform === 'win32' ? 'dist/defaults-inert.3876bd.js' : 'dist/defaults-inert.2f0c2f.js'),
+		join(__dirname, process.platform === 'win32' ? 'dist/defaults-inert.70b6b5.js' : 'dist/defaults-inert.9eda03.js'),
 		'utf8'
 	);
 
@@ -57,7 +57,7 @@ test('basic usage', async t => {
 	);
 	t.regex(
 		mainBundle,
-		process.platform === 'win32' ? /"defaults-inert.3876bd.js"/ : /"defaults-inert.2f0c2f.js"/,
+		process.platform === 'win32' ? /"defaults-inert.70b6b5.js"/ : /"defaults-inert.9eda03.js"/,
 		'references spawned inert defaults with hash'
 	);
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
