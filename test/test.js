@@ -8,6 +8,8 @@ import rimraf from 'rimraf';
 test('basic usage', async t => {
 	await new Promise((resolve, reject) => {
 		webpack({
+			mode: 'development',
+			devtool: false,
 			entry: join(__dirname, 'src/main.js'),
 			bail: true,
 			output: {
@@ -15,7 +17,7 @@ test('basic usage', async t => {
 				filename: 'main.bundle.js'
 			},
 			module: {
-				loaders: [{
+				rules: [{
 					test: /\.entry\.js$/,
 					use: {
 						loader: join(__dirname, '../index.js'),
@@ -24,7 +26,7 @@ test('basic usage', async t => {
 				}]
 			}
 		}, (err, stats) => {
-			err ? reject(err) : resolve(stats);
+			stats.hasErrors() ? reject(stats.toString()) : resolve(stats);
 		});
 	});
 
@@ -34,16 +36,16 @@ test('basic usage', async t => {
 	const child1 = readFileSync(join(__dirname, 'dist/children/child1.js'), 'utf8');
 	const subchild = readFileSync(join(__dirname, 'dist/children/subchild/subchild.js'), 'utf8');
 	const defaults = readFileSync(join(__dirname, 'dist/defaults.js'), 'utf8');
-	const manifest = readFileSync(join(__dirname, 'dist/inertOut/manifest.json'), 'utf8');
-	const defaultsWithHash = readFileSync(join(__dirname, 'dist/defaults.c8d36a.js'), 'utf8');
-	const defaultsInertWithHash = readFileSync(join(__dirname, 'dist/defaults-inert.2f0c2f.js'), 'utf8');
+	const manifest = readFileSync(join(__dirname, 'dist/inertOut/manifest.notjson'), 'utf8');
+	const defaultsWithHash = readFileSync(join(__dirname, 'dist/defaults.70b6b5.js'), 'utf8');
+	const defaultsInertWithHash = readFileSync(join(__dirname, 'dist/defaults-inert.3876bd.js'), 'utf8');
 
 	t.regex(mainBundle, /"other\.entry\.spawned\.js"/, 'references spawned other entry');
 	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references spawned child1');
 	t.regex(mainBundle, /"defaults\.js"/, 'references spawned defaults');
-	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.json"/, 'references spawned manifest.json');
-	t.regex(mainBundle, /"defaults.c8d36a.js"/, 'references spawned defaults with hash');
-	t.regex(mainBundle, /"defaults-inert.2f0c2f.js"/, 'references spawned inert defaults with hash');
+	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.notjson"/, 'references spawned manifest.json');
+	t.regex(mainBundle, /"defaults.70b6b5.js"/, 'references spawned defaults with hash');
+	t.regex(mainBundle, /"defaults-inert.3876bd.js"/, 'references spawned inert defaults with hash');
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(otherEntry, /\bfunction __webpack_require__\b/, 'has prelude');
