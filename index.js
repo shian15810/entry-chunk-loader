@@ -8,7 +8,6 @@
 
 var path = require('path');
 var loaderUtils = require('loader-utils');
-var webpack = require('webpack');
 var SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 
 var fileLoaderPath = require.resolve('file-loader');
@@ -38,30 +37,27 @@ module.exports.pitch = function(request) {
 
 	// add a dependency on the entry point of the child compiler, so watch mode works
 	this.addDependency(request);
-	compiler.apply(new SingleEntryPlugin(
+	new SingleEntryPlugin(
 		this.context,
 		'!!' + (inert ? fileLoaderPath + '?' + JSON.stringify({ name: partiallyInterpolatedName }) + '!' : '') + request,
 		loaderUtils.interpolateName(this, '[name]', {}) // name of the chunk (in logs), not a filename
-	));
-
-	// avoid emitting files with errors, which breaks the parent compiler
-	compiler.apply(new webpack.NoErrorsPlugin());
+	).apply(compiler);
 
 	// like compiler.runAsChild(), but remaps paths if necessary
-	// https://github.com/webpack/webpack/blob/2095096835caffbbe3472beaffebb9e7a732ade3/lib/Compiler.js#L267
+	// https://github.com/webpack/webpack/blob/f6e366b4be1cfe2770251a890d93081824789209/lib/Compiler.js#L206
 	compiler.compile(function(err, compilation) {
 		if (err) return callback(err);
 
 		// for non-inert entry points, the first file in the first chunk of the first (should only be one) entry point is the real file
-		// see https://github.com/webpack/webpack/blob/813c47bde92575700937580d58fa691d4b0b8ac2/lib/Compiler.js#L298
-		var outputFilename = compilation.entrypoints[Object.keys(compilation.entrypoints)[0]].chunks[0].files[0];
+		// see https://github.com/webpack/webpack/blob/f6e366b4be1cfe2770251a890d93081824789209/lib/Compiler.js#L215
+		var outputFilename = compilation.entrypoints.values().next().value.chunks[0].files[0];
 
 		this.parentCompilation.children.push(compilation);
-		Object.keys(compilation.assets).forEach(function(name) {
-			if (inert && name === placeholder) return;
+		for (const name of Object.keys(compilation.assets)) {
+			if (inert && name === placeholder) continue;
 			if (inert) outputFilename = name; // for inert entry points, last non-placeholder asset is the real file
 			this.parentCompilation.assets[path.join(outputDir, name)] = compilation.assets[name];
-		}.bind(this));
+		}
 
 		callback(null, 'module.exports = __webpack_public_path__ + ' + JSON.stringify(path.join(outputDir, outputFilename)) + ';')
 	}.bind(compiler));
