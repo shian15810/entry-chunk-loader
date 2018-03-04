@@ -4,11 +4,9 @@ Webpack loader to spawn a new entry chunk.
 
 A fork of [`entry-loader`](https://github.com/eoin/entry-loader), with a few changes:
 
-- Uses the required file's basename for the chunk name.
+- Gives descriptive names to the chunk and child compiler.
 
-- Applies the [`NoErrorsPlugin`](https://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin) to the child compiler to prevent syntax errors from crashing the parent compiler in watch mode.
-
-- Allows you to provide the `path` query param to output all files to a subdirectory.
+- Adds a `path` option to output files to a subdirectory.
 
 ## Installation
 
