@@ -1,4 +1,4 @@
-# spawn-loader [![Build Status](https://travis-ci.org/erikdesjardins/spawn-loader.svg?branch=master)](https://travis-ci.org/erikdesjardins/spawn-loader)
+# spawn-loader
 
 Webpack loader to spawn a new entry chunk.
 

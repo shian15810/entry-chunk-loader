@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import test from 'ava';
@@ -38,11 +38,11 @@ test('basic usage', async t => {
 	const defaults = readFileSync(join(__dirname, 'dist/defaults.js'), 'utf8');
 	const manifest = readFileSync(join(__dirname, 'dist/inertOut/manifest.notjson'), 'utf8');
 	const defaultsWithHash = readFileSync(
-		join(__dirname, process.platform === 'win32' ? 'dist/defaults.70b6b5.js' : 'dist/defaults.9eda03.js'),
+		join(__dirname, process.platform === 'win32' ? 'dist/defaults.acd3bd.js' : 'dist/defaults.586ec8.js'),
 		'utf8'
 	);
 	const defaultsInertWithHash = readFileSync(
-		join(__dirname, process.platform === 'win32' ? 'dist/defaults-inert.70b6b5.js' : 'dist/defaults-inert.9eda03.js'),
+		join(__dirname, process.platform === 'win32' ? 'dist/defaults-inert.acd3bd.js' : 'dist/defaults-inert.586ec8.js'),
 		'utf8'
 	);
 
@@ -52,12 +52,12 @@ test('basic usage', async t => {
 	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.notjson"/, 'references spawned manifest.json');
 	t.regex(
 		mainBundle,
-		process.platform === 'win32' ? /"defaults.70b6b5.js"/ : /"defaults.9eda03.js"/,
+		process.platform === 'win32' ? /"defaults.acd3bd.js"/ : /"defaults.586ec8.js"/,
 		'references spawned defaults with hash'
 	);
 	t.regex(
 		mainBundle,
-		process.platform === 'win32' ? /"defaults-inert.70b6b5.js"/ : /"defaults-inert.9eda03.js"/,
+		process.platform === 'win32' ? /"defaults-inert.acd3bd.js"/ : /"defaults-inert.586ec8.js"/,
 		'references spawned inert defaults with hash'
 	);
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
