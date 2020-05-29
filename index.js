@@ -19,7 +19,10 @@ module.exports.pitch = function(request) {
 	var options = loaderUtils.getOptions(this) || {};
 	var filename = options.name || path.basename(this.resourcePath);
 	var outputDir = options.path || '.';
-	var plugins = options.inert ? [new InertEntryPlugin()] : [];
+	var plugins = options.plugins || [];
+	if (options.inert) {
+		plugins = [new InertEntryPlugin()].concat(plugins);
+	}
 
 	// name of the entry and compiler (in logs)
 	var debugName = loaderUtils.interpolateName(this, '[name]', {});
