@@ -21,7 +21,7 @@ module.exports.pitch = function(request) {
 	var outputDir = options.path || '.';
 	var plugins = options.plugins || [];
 	if (options.inert) {
-		plugins.push(new InertEntryPlugin());
+		plugins = [new InertEntryPlugin()].concat(plugins);
 	}
 
 	// name of the entry and compiler (in logs)
