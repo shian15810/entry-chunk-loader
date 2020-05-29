@@ -33,3 +33,22 @@ var url = require('spawn-loader?name=bundle.js!./file');
 var url = require('spawn-loader?inert!./manifest.json');
 // url === 'manifest.json'
 ```
+
+### webpack.config.js Options
+
+**file.js**
+```js
+import React from 'react';
+```
+
+**webpack.config.js**
+```js
+// ...
+{
+  loader: 'spawn-loader',
+  options: {
+    // add plugins to the child compiler
+    plugins: [new webpack.ExternalsPlugin('var', { react: 'React' })]
+  }
+}
+```
