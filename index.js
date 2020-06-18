@@ -17,7 +17,9 @@ module.exports.pitch = function(request) {
 	var callback = this.async();
 
 	var options = loaderUtils.getOptions(this) || {};
-	var filename = options.name || path.basename(this.resourcePath);
+	var context = options.context || this.rootContext;
+	var name = options.name || path.basename(this.resourcePath);
+	var filename = loaderUtils.interpolateName(this, name, { context: context });
 	var outputDir = options.path || '.';
 	var plugins = options.plugins || [];
 	if (options.inert) {
