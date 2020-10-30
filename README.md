@@ -1,54 +1,58 @@
-# spawn-loader
+# entry-chunk-loader
 
-Webpack loader to spawn a new entry chunk.
+Webpack loader to generate a new entry chunk.
 
-A fork of [`entry-loader`](https://github.com/eoin/entry-loader), with a few changes:
+A fork of [`spawn-loader`](https://github.com/erikdesjardins/spawn-loader), with a few notable changes:
 
-- Gives descriptive names to the chunk and child compiler.
-
-- Adds a `path` option to output files to a subdirectory.
+- Supports [Webpack 5](https://webpack.js.org/blog/2020-10-10-webpack-5-release/).
+- Supports native [ECMAScript modules](https://nodejs.org/api/esm.html) of Node.js.
 
 ## Installation
 
-`npm install --save-dev spawn-loader`
+`npm install --save-dev entry-chunk-loader`
 
 ## Usage
 
+### ECMAScript modules
+
 ```js
 // simplest usage: emits otherBundle.js in the same directory
-var url = require('spawn-loader!./otherBundle');
+import url from 'entry-chunk-loader!./otherBundle');
 // url === 'otherBundle.js'
 
 // build into a subdir: emits otherBundle.js
 // (and any assets it emits) into childDir/
-var url = require('spawn-loader?path=childDir!./otherBundle');
+import url from 'entry-chunk-loader?path=childDir!./otherBundle';
 // url === 'childDir/otherBundle.js'
 
 // specify a different name
-var url = require('spawn-loader?name=bundle.js!./file');
+import url from 'entry-chunk-loader?name=bundle.js!./file';
 // url === 'bundle.js'
 
 // emit the required file as-is, with no prelude
 // only useful in combination with other loaders
-var url = require('spawn-loader?inert!./manifest.json');
+import url from 'entry-chunk-loader?inert!./manifest.json';
 // url === 'manifest.json'
 ```
 
-### webpack.config.js Options
+### CommonJS modules
 
-**file.js**
 ```js
-import React from 'react';
-```
+// simplest usage: emits otherBundle.js in the same directory
+const url = require('entry-chunk-loader!./otherBundle');
+// url === 'otherBundle.js'
 
-**webpack.config.js**
-```js
-// ...
-{
-  loader: 'spawn-loader',
-  options: {
-    // add plugins to the child compiler
-    plugins: [new webpack.ExternalsPlugin('var', { react: 'React' })]
-  }
-}
+// build into a subdir: emits otherBundle.js
+// (and any assets it emits) into childDir/
+const url = require('entry-chunk-loader?path=childDir!./otherBundle');
+// url === 'childDir/otherBundle.js'
+
+// specify a different name
+const url = require('entry-chunk-loader?name=bundle.js!./file');
+// url === 'bundle.js'
+
+// emit the required file as-is, with no prelude
+// only useful in combination with other loaders
+const url = require('entry-chunk-loader?inert!./manifest.json');
+// url === 'manifest.json'
 ```

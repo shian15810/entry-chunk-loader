@@ -21,7 +21,7 @@ test('basic usage', async t => {
 					test: /\.entry\.js$/,
 					use: {
 						loader: join(__dirname, '../index.js'),
-						options: { name: '[name].spawned.js' }
+						options: { name: '[name].chunk.js' }
 					}
 				}]
 			}
@@ -31,7 +31,7 @@ test('basic usage', async t => {
 	});
 
 	const mainBundle = readFileSync(join(__dirname, 'dist/main.bundle.js'), 'utf8');
-	const otherEntry = readFileSync(join(__dirname, 'dist/other.entry.spawned.js'), 'utf8');
+	const otherEntry = readFileSync(join(__dirname, 'dist/other.entry.chunk.js'), 'utf8');
 	const hi = readFileSync(join(__dirname, 'dist/children/hi.jpg'));
 	const child1 = readFileSync(join(__dirname, 'dist/children/child1.js'), 'utf8');
 	const subchild = readFileSync(join(__dirname, 'dist/children/subchild/subchild.js'), 'utf8');
@@ -46,19 +46,19 @@ test('basic usage', async t => {
 		'utf8'
 	);
 
-	t.regex(mainBundle, /"other\.entry\.spawned\.js"/, 'references spawned other entry');
-	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references spawned child1');
-	t.regex(mainBundle, /"defaults\.js"/, 'references spawned defaults');
-	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.notjson"/, 'references spawned manifest.json');
+	t.regex(mainBundle, /"other\.entry\.chunk\.js"/, 'references other entry chunk');
+	t.regex(mainBundle, /"children(\/|\\\\)child1\.js"/, 'references child1 chunk');
+	t.regex(mainBundle, /"defaults\.js"/, 'references defaults chunk');
+	t.regex(mainBundle, /"inertOut(\/|\\\\)manifest\.notjson"/, 'references manifest.json chunk');
 	t.regex(
 		mainBundle,
 		process.platform === 'win32' ? /"defaults.acd3bd.js"/ : /"defaults.586ec8.js"/,
-		'references spawned defaults with hash'
+		'references defaults chunk with hash'
 	);
 	t.regex(
 		mainBundle,
 		process.platform === 'win32' ? /"defaults-inert.acd3bd.js"/ : /"defaults-inert.586ec8.js"/,
-		'references spawned inert defaults with hash'
+		'references inert defaults chunk with hash'
 	);
 	t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
@@ -70,7 +70,7 @@ test('basic usage', async t => {
 
 	t.regex(child1, /\bfunction __webpack_require__\b/, 'has prelude');
 	t.regex(child1, /"hi\.jpg"/, 'references hi.jpg');
-	t.regex(child1, /"subchild(\/|\\\\)subchild\.js"/, 'references spawned subchild');
+	t.regex(child1, /"subchild(\/|\\\\)subchild\.js"/, 'references subchild chunk');
 	t.regex(child1, /__webpack_require__\.p = ""/, 'publicPath is empty');
 
 	t.regex(subchild, /\bfunction __webpack_require__\b/, 'has prelude');

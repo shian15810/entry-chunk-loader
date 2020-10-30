@@ -1,27 +1,27 @@
 {
-  "name": "spawn-loader",
-  "version": "7.0.0",
-  "description": "Webpack loader to spawn a new entry chunk.",
+  "name": "entry-chunk-loader",
+  "version": "0.1.0",
+  "description": "Webpack loader to generate a new entry chunk.",
   "main": "index.js",
   "scripts": {
-    "test": "ava test/test.js"
+    "test": "ava test/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/erikdesjardins/spawn-loader.git"
+    "url": "git+https://github.com/shian15810/entry-chunk-loader.git"
   },
   "keywords": [
-    "webpack"
+    "entry",
+    "chunk",
+    "webpack",
+    "loader"
   ],
-  "author": "Erik Desjardins",
+  "author": "Chuah Chee Shian <shian15810@gmail.com> (https://github.com/shian15810)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/erikdesjardins/spawn-loader/issues"
+    "url": "https://github.com/shian15810/entry-chunk-loader/issues"
   },
-  "homepage": "https://github.com/erikdesjardins/spawn-loader#readme",
-  "peerDependencies": {
-    "webpack": "^4.0.0"
-  },
+  "homepage": "https://github.com/shian15810/entry-chunk-loader#readme",
   "dependencies": {
     "inert-entry-webpack-plugin": "^4.0.0",
     "loader-utils": "^2.0.0"
@@ -31,5 +31,8 @@
     "file-loader": "^1.1.11",
     "rimraf": "^3.0.0",
     "webpack": "^4.41.2"
+  },
+  "peerDependencies": {
+    "webpack": "*"
   }
 }
