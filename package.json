@@ -1,6 +1,6 @@
 {
   "name": "entry-chunk-loader",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Webpack loader to generate a new entry chunk.",
   "main": "index.js",
   "scripts": {
