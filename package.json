@@ -1,7 +1,7 @@
 {
   "type": "commonjs",
   "name": "entry-chunk-loader",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Webpack loader to generate a new entry chunk.",
   "exports": {
     "import": "./index.mjs",
