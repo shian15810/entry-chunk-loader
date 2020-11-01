@@ -1,1 +1,1 @@
-var def = 'aults';
+const def = 'aults';

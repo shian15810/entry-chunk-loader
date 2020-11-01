@@ -1,10 +1,15 @@
 {
+  "type": "commonjs",
   "name": "entry-chunk-loader",
   "version": "0.1.2",
   "description": "Webpack loader to generate a new entry chunk.",
-  "main": "index.js",
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.js"
+  },
+  "main": "./index.js",
   "scripts": {
-    "test": "ava test/index.js"
+    "test": "ava test/index.mjs"
   },
   "repository": {
     "type": "git",
@@ -23,14 +28,14 @@
   },
   "homepage": "https://github.com/shian15810/entry-chunk-loader#readme",
   "dependencies": {
-    "inert-entry-webpack-plugin": "^4.0.0",
-    "loader-utils": "^2.0.0"
+    "inert-entry-webpack-plugin": "^4.0.2",
+    "loader-utils": "^2.0.0",
+    "webpack": "^4.44.2"
   },
   "devDependencies": {
-    "ava": "^2.4.0",
-    "file-loader": "^1.1.11",
-    "rimraf": "^3.0.0",
-    "webpack": "^4.41.2"
+    "ava": "^3.13.0",
+    "file-loader": "^6.2.0",
+    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
     "webpack": "*"

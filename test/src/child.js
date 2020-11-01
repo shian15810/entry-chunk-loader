@@ -1,2 +1,2 @@
-var baz = require('file-loader?name=hi.jpg!./hi.jpg');
-var child2 = require('../../index.js?path=subchild&name=subchild.js!./child2.js');
+const baz = require('file-loader?name=hi.jpeg!./hi.jpeg');
+const child2 = require('../../index.js?path=subchild&name=subchild.js!./child2.js');
