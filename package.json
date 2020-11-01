@@ -9,6 +9,7 @@
   },
   "main": "./index.js",
   "scripts": {
+    "format": "prettier --write .",
     "test": "ava test/index.mjs"
   },
   "repository": {
@@ -29,13 +30,14 @@
   "homepage": "https://github.com/shian15810/entry-chunk-loader#readme",
   "dependencies": {
     "inert-entry-webpack-plugin": "^4.0.2",
-    "loader-utils": "^2.0.0",
-    "webpack": "^4.44.2"
+    "loader-utils": "^2.0.0"
   },
   "devDependencies": {
     "ava": "^3.13.0",
     "file-loader": "^6.2.0",
-    "rimraf": "^3.0.2"
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.44.2"
   },
   "peerDependencies": {
     "webpack": "*"
