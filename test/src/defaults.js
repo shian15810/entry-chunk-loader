@@ -1,1 +1,1 @@
-const def = 'aults';
+export const def = 'aults';

@@ -61,11 +61,11 @@ test('basic usage', async (t) => {
     'utf8',
   );
   const defaultsWithHash = readFileSync(
-    join(__dirname, 'dist/defaults.b51c20.js'),
+    join(__dirname, 'dist/defaults.9a88b0.js'),
     'utf8',
   );
   const defaultsInertWithHash = readFileSync(
-    join(__dirname, 'dist/defaults-inert.b51c20.js'),
+    join(__dirname, 'dist/defaults-inert.9b489c.js'),
     'utf8',
   );
 
@@ -87,12 +87,12 @@ test('basic usage', async (t) => {
   );
   t.regex(
     mainBundle,
-    /"defaults.b51c20.js"/,
+    /"defaults.9a88b0.js"/,
     'references defaults chunk with hash',
   );
   t.regex(
     mainBundle,
-    /"defaults-inert.b51c20.js"/,
+    /"defaults-inert.9b489c.js"/,
     'references inert defaults chunk with hash',
   );
   t.regex(mainBundle, /__webpack_require__\.p = ""/, 'publicPath is empty');
@@ -136,7 +136,7 @@ test('basic usage', async (t) => {
 
   t.regex(
     defaultsInertWithHash,
-    /^const def = 'aults';\s+$/,
+    /^export const def = 'aults';\s+$/,
     'has expected, raw content',
   );
 });
