@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "entry-chunk-loader",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Webpack loader to generate a new entry chunk.",
   "exports": {
     "import": "./index.js",
