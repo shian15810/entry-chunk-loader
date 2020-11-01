@@ -1,16 +1,16 @@
 {
-  "type": "commonjs",
+  "type": "module",
   "name": "entry-chunk-loader",
   "version": "0.2.2",
   "description": "Webpack loader to generate a new entry chunk.",
   "exports": {
-    "import": "./index.mjs",
-    "require": "./index.js"
+    "import": "./index.js",
+    "require": "./index.cjs"
   },
-  "main": "./index.js",
+  "main": "./index.cjs",
   "scripts": {
     "format": "prettier --write .",
-    "test": "ava test/index.mjs"
+    "test": "ava test/index.js"
   },
   "repository": {
     "type": "git",

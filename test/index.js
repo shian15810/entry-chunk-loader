@@ -25,7 +25,7 @@ test('basic usage', async (t) => {
             {
               test: /\.entry\.js$/,
               use: {
-                loader: join(__dirname, '../index.js'),
+                loader: join(__dirname, '../index.cjs'),
                 options: { name: '[name].chunk.js' },
               },
             },
