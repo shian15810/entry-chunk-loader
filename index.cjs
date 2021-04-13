@@ -3,7 +3,8 @@
 const path = require('path');
 const InertEntryPlugin = require('inert-entry-webpack-plugin');
 const loaderUtils = require('loader-utils');
-const { SingleEntryPlugin } = require('webpack');
+const isWebpack5 = require("webpack/package.json").version.startsWith("5.");
+const { [isWebpack5 ? "EntryPlugin" : "SingleEntryPlugin"]: EntryPlugin } = require('webpack');
 
 module.exports = function () {};
 
@@ -31,7 +32,7 @@ module.exports.pitch = function (request) {
     { filename: filename },
     plugins,
   );
-  new SingleEntryPlugin(this.context, '!!' + request, debugName).apply(
+  new EntryPlugin(this.context, '!!' + request, debugName).apply(
     compiler,
   );
 
