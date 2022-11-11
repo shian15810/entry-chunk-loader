@@ -30,7 +30,7 @@
   "homepage": "https://github.com/shian15810/entry-chunk-loader#readme",
   "dependencies": {
     "inert-entry-webpack-plugin": "^4.0.2",
-    "loader-utils": "^2.0.0"
+    "loader-utils": "^3.2.1"
   },
   "devDependencies": {
     "ava": "^3.13.0",
